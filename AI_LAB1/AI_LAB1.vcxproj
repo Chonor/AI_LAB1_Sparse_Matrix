@@ -111,7 +111,17 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="源.cpp" />
+    <ClCompile Include="Sparse_Matrix.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Sparse_Matrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\x64\Debug\M.txt" />
+    <Text Include="..\x64\Debug\M1.txt" />
+    <Text Include="..\x64\Debug\M2.txt" />
+    <Text Include="..\x64\Debug\M3.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

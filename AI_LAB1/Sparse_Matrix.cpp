@@ -1,16 +1,6 @@
-#define _CRT_SECURE_NO_WARNINGS
-
-#include<iostream>
-#include<fstream>
-#include<vector>
-#include<algorithm>
-#include<cstdio>
-#include<string>
-#include <sstream>
-using namespace std;
-
+#include"Sparse_Matrix.h"
 int To_Num(string str) {
-	int num=0;
+	int num = 0;
 	if (str != "") {
 		str = str.substr(1, str.length() - 2);
 		stringstream ss(str);
@@ -18,15 +8,6 @@ int To_Num(string str) {
 	}
 	return num;
 }
-
-class Sparse_Matrix_Elem {
-public:
-	Sparse_Matrix_Elem();
-	Sparse_Matrix_Elem(int row, int col, int value);
-	Sparse_Matrix_Elem(string str);
-	bool operator<(Sparse_Matrix_Elem &elem);
-	int row, col, value;
-};
 
 Sparse_Matrix_Elem::Sparse_Matrix_Elem()
 {
@@ -42,7 +23,7 @@ Sparse_Matrix_Elem::Sparse_Matrix_Elem(int row, int col, int value)
 
 Sparse_Matrix_Elem::Sparse_Matrix_Elem(string str)
 {
-	string row="", col = "", value = "";
+	string row = "", col = "", value = "";
 	int cnt = 0;
 	for (int i = 0; i < str.length(); i++) {
 		if (cnt == 0 && str[i] >= '0'&&str[i] <= '9') row += str[i];
@@ -50,7 +31,7 @@ Sparse_Matrix_Elem::Sparse_Matrix_Elem(string str)
 		if (cnt == 2 && str[i] >= '0'&&str[i] <= '9') value += str[i];
 		if (str[i] == ',')cnt++;
 	}
-	stringstream ssr(row),ssc(col),ssv(value) ;
+	stringstream ssr(row), ssc(col), ssv(value);
 	ssr >> this->row;
 	ssc >> this->col;
 	ssv >> this->value;
@@ -63,20 +44,6 @@ bool Sparse_Matrix_Elem::operator<(Sparse_Matrix_Elem & elem)
 	}
 	else return this->row < elem.row;
 }
-
-class Sparse_Matrix
-{
-public:
-	Sparse_Matrix();
-	Sparse_Matrix(int row,int col,int num);
-	Sparse_Matrix operator+(Sparse_Matrix Matrix);
-	Sparse_Matrix &operator+=(Sparse_Matrix &Matrix);
-	friend istream& operator >>(istream &is, Sparse_Matrix &Matrix);
-	friend ostream& operator <<(ostream &os, Sparse_Matrix &Matrix);
-private:
-	int row, col, num;
-	vector<Sparse_Matrix_Elem>elem;
-};
 
 Sparse_Matrix::Sparse_Matrix()
 {
@@ -95,7 +62,7 @@ Sparse_Matrix Sparse_Matrix::operator+(Sparse_Matrix Matrix)
 	vector<Sparse_Matrix_Elem>tmp;
 	Sparse_Matrix_Elem temp;
 	Sparse_Matrix other;
-	while (cnt<this->num+Matrix.num)
+	while (cnt<this->num + Matrix.num)
 	{
 		if (i >= this->num) {
 			tmp.push_back(Matrix.elem[j]);
@@ -176,7 +143,7 @@ Sparse_Matrix & Sparse_Matrix::operator+=(Sparse_Matrix & Matrix)
 			}
 		}
 	}
-	this->col = max(this->col,Matrix.col);
+	this->col = max(this->col, Matrix.col);
 	this->row = max(this->row, Matrix.row);
 	this->elem = tmp;
 	this->num = tmp.size();
@@ -185,7 +152,7 @@ Sparse_Matrix & Sparse_Matrix::operator+=(Sparse_Matrix & Matrix)
 
 istream & operator>>(istream & is, Sparse_Matrix & Matrix)
 {
-	string row, col, num,str;
+	string row, col, num, str;
 	is >> row >> col >> num;
 	Matrix.row = To_Num(row);
 	Matrix.col = To_Num(col);
@@ -211,22 +178,4 @@ ostream & operator<<(ostream & os, Sparse_Matrix & Matrix)
 		os << '[' << Matrix.elem[i].row << ',' << Matrix.elem[i].col << ',' << Matrix.elem[i].value << "]\n";
 	}
 	return os;
-}
-
-int main() {
-	Sparse_Matrix m1,m2,m3;
-	ifstream in1("M.txt");
-	ifstream in2("M1.txt");
-	ofstream out("M2.txt");
-	ofstream out1("M3.txt");
-	in1 >> m1;
-	in2 >> m2;
-	//cin >> m1 >> m2;
-	//cout << m1 << m2;
-	m3 = m1 + m2;
-	out << m3;
-	m1 += m2;
-	m1 += m3;
-	out1 << m1;
-	system("pause");
 }
